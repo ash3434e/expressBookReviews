@@ -1,0 +1,8 @@
+﻿[
+    {
+        "isbn": "8",
+        "author": "Jane Austen",
+        "title": "Pride and Prejudice",
+        "reviews": {}
+    }
+]
