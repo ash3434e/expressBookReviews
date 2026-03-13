@@ -1,12 +1,24 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const session = require('express-session');
+const path = require('path');
 const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
 
 const app = express();
 
+// CORS headers for screenshot/testing page
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
+
 app.use(express.json());
+app.use(express.static(__dirname));
+
 
 // Session middleware scoped to /customer routes
 app.use("/customer", session({

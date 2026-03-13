@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>IBM Book Review - Task Outputs</title>
+<style>
+  body { font-family: monospace; background: #1e1e2e; color: #cdd6f4; margin: 0; padding: 0; }
+  .task { background: #181825; border-left: 4px solid #89b4fa; margin: 20px auto; max-width: 900px; padding: 20px; border-radius: 8px; }
+  .task h2 { color: #89b4fa; font-size: 14px; margin: 0 0 10px 0; }
+  .cmd { color: #a6e3a1; margin-bottom: 6px; }
+  .out { color: #f9e2af; white-space: pre; }
+  .label { color: #cba6f7; font-weight: bold; margin-top: 10px; display: block; }
+</style>
+</head>
+<body>
+
+<div class="task" id="t1">
+  <h2>Task 1: Get all books (1-getallbooks)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s http://localhost:5000/</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o1">Loading...</div>
+</div>
+
+<div class="task" id="t2">
+  <h2>Task 2: Get book by ISBN (2-getbooksbyISBN)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s http://localhost:5000/isbn/1</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o2">Loading...</div>
+</div>
+
+<div class="task" id="t3">
+  <h2>Task 3: Get books by Author (3-getbooksbyauthor)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s "http://localhost:5000/author/Chinua%20Achebe"</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o3">Loading...</div>
+</div>
+
+<div class="task" id="t4">
+  <h2>Task 4: Get books by Title (4-getbooksbytitle)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s "http://localhost:5000/title/Things%20Fall%20Apart"</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o4">Loading...</div>
+</div>
+
+<div class="task" id="t5">
+  <h2>Task 5: Get book review (5-getbookreview)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s http://localhost:5000/review/1</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o5">Loading...</div>
+</div>
+
+<div class="task" id="t6">
+  <h2>Task 6: Register new user (6-register)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s -X POST http://localhost:5000/register -H "Content-Type: application/json" -d '{"username":"newuser99","password":"pass123"}'</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o6">Loading...</div>
+</div>
+
+<div class="task" id="t7">
+  <h2>Task 7: Login (7-login)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s -X POST http://localhost:5000/customer/login -H "Content-Type: application/json" -d '{"username":"newuser99","password":"pass123"}' -c cookies.txt</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o7">Loading...</div>
+</div>
+
+<div class="task" id="t8">
+  <h2>Task 8: Add/Modify Review (8-reviewadded)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s -X PUT "http://localhost:5000/customer/auth/review/1?review=GreatBook" -b cookies.txt</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o8">Loading...</div>
+</div>
+
+<div class="task" id="t9">
+  <h2>Task 9: Delete Review (9-deletereview)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s -X DELETE http://localhost:5000/customer/auth/review/1 -b cookies.txt</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o9">Loading...</div>
+</div>
+
+<div class="task" id="t10">
+  <h2>Task 10: Get all books using async/await (10-async-getallbooks)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s http://localhost:5000/</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o10">Loading...</div>
+</div>
+
+<div class="task" id="t11">
+  <h2>Task 11: Search by ISBN using Promises (11-isbn-promises)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s http://localhost:5000/isbn/3</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o11">Loading...</div>
+</div>
+
+<div class="task" id="t12">
+  <h2>Task 12: Search by Author using Promises (12-author-promises)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s "http://localhost:5000/author/Jane%20Austen"</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o12">Loading...</div>
+</div>
+
+<div class="task" id="t13">
+  <h2>Task 13: Search by Title using Promises (13-title-promises)</h2>
+  <span class="label">Command:</span>
+  <div class="cmd">curl -s "http://localhost:5000/title/Pride%20and%20Prejudice"</div>
+  <span class="label">Output:</span>
+  <div class="out" id="o13">Loading...</div>
+</div>
+
+<script>
+async function fetchAndDisplay(id, url, opts) {
+  try {
+    const resp = await fetch(url, opts || {});
+    const data = await resp.json();
+    document.getElementById('o' + id).textContent = JSON.stringify(data, null, 2);
+  } catch(e) {
+    document.getElementById('o' + id).textContent = 'Error: ' + e.message;
+  }
+}
+
+async function run() {
+  await fetchAndDisplay(1, 'http://localhost:5000/');
+  await fetchAndDisplay(2, 'http://localhost:5000/isbn/1');
+  await fetchAndDisplay(3, 'http://localhost:5000/author/Chinua%20Achebe');
+  await fetchAndDisplay(4, 'http://localhost:5000/title/Things%20Fall%20Apart');
+  await fetchAndDisplay(5, 'http://localhost:5000/review/1');
+
+  // Register
+  const regResp = await fetch('http://localhost:5000/register', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username:'screenshotuser',password:'pass123'})});
+  document.getElementById('o6').textContent = JSON.stringify(await regResp.json(), null, 2);
+
+  // Login
+  const loginResp = await fetch('http://localhost:5000/customer/login', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username:'screenshotuser',password:'pass123'}), credentials:'include'});
+  const loginData = await loginResp.json();
+  document.getElementById('o7').textContent = JSON.stringify(loginData, null, 2);
+
+  // Add review  
+  const addResp = await fetch('http://localhost:5000/customer/auth/review/1?review=GreatBook', {method:'PUT', credentials:'include'});
+  document.getElementById('o8').textContent = JSON.stringify(await addResp.json(), null, 2);
+
+  // Delete review
+  const delResp = await fetch('http://localhost:5000/customer/auth/review/1', {method:'DELETE', credentials:'include'});
+  document.getElementById('o9').textContent = JSON.stringify(await delResp.json(), null, 2);
+
+  // Tasks 10-13 (async/promise)
+  await fetchAndDisplay(10, 'http://localhost:5000/');
+  await fetchAndDisplay(11, 'http://localhost:5000/isbn/3');
+  await fetchAndDisplay(12, 'http://localhost:5000/author/Jane%20Austen');
+  await fetchAndDisplay(13, 'http://localhost:5000/title/Pride%20and%20Prejudice');
+}
+
+run();
+</script>
+</body>
+</html>
